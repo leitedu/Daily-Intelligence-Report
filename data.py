@@ -2,10 +2,17 @@ from playwright.sync_api import sync_playwright
 from datetime import date
 from bs4 import BeautifulSoup
 from time import sleep, strftime
+from pathlib import Path
+from dotenv import load_dotenv
 import pandas as pd
+import os
+
+#Load environment variables from .env file
+load_dotenv()
+root = Path(os.getenv('PASTA'))
 
 dia = date.today()
-pasta = fr'C:\Users\eduardosilva-aeg\OneDrive - AMBAR ENERGIA LTDA\Documentos\Materiais\Apresentações\01. Janeiro 2026\Relatório de Inteligencia - diário\Deck {dia.strftime("%d.%m.%Y")}'
+folder = foot /  f'Deck {dia.strftime("%d.%m.%Y")}'
 
 def dados():
 
@@ -57,8 +64,8 @@ def cmo_cammesa(page):
 
     precios_usd = precios_usd.round(2).applymap(lambda x: f'{x:.2f}' if isinstance(x, (int, float)) else x).iloc[:,2:]
     precios_ars = precios_ars.round(2).applymap(lambda x: f'{x:.2f}' if isinstance(x, (int, float)) else x).iloc[:,2:]
-    precios_ars.to_csv(f'{pasta}\\CMO_arg_peso.csv', index=False)
-    precios_usd.to_csv(f'{pasta}\\CMO_arg.csv', index=False)
+    precios_ars.to_csv(f'{folder}\\CMO_arg_peso.csv', index=False)
+    precios_usd.to_csv(f'{folder}\\CMO_arg.csv', index=False)
 
 
 def repdoe(page):
@@ -67,7 +74,7 @@ def repdoe(page):
     senha = 'Ambar-energia@2025'
     dia = date.today()
 
-    local = rf'{pasta}\REPDOE-{dia.strftime("%Y%m%d")}.pdf'
+    local = rf'{folder}\REPDOE-{dia.strftime("%Y%m%d")}.pdf'
 
     result = False
     tentativas = 0
@@ -93,7 +100,7 @@ def repdoe(page):
 
 
 def df_cmo_barra():
-    df = pd.read_csv(f'{pasta}\\CMO_barra.csv', delimiter=';')
+    df = pd.read_csv(f'{folder}\\CMO_barra.csv', delimiter=';')
     return df
 
 
