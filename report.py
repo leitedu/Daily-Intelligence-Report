@@ -6,10 +6,17 @@ from load import *
 from transform import *
 from cabecalho import *
 from datetime import date
+from pathlib import Path
+from dotenv import load_dotenv
+import pandas as pd
+import os
 
-pasta = r'C:\Users\eduardosilva-aeg\OneDrive - AMBAR ENERGIA LTDA\Documentos\Materiais\Apresentações\01. Janeiro 2026\Relatório de Inteligencia - diário\Relatórios'
+#Load environment variables from .env file
+load_dotenv()
+root = Path(os.getenv('FOLDER_OUTPUT'))
+
 dia = date.today()
-doc_name = rf'{pasta}\Relatório de Inteligência {dia.strftime("%d-%m-%Y")}.pdf'
+doc_name = root / f'Relatório de Inteligência {dia.strftime("%d-%m-%Y")}.pdf'
 
 
 def relatorio():
