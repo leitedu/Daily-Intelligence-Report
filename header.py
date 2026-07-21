@@ -2,13 +2,18 @@ from reportlab.platypus import Paragraph
 from reportlab.lib.units import cm
 from reportlab.lib.styles import ParagraphStyle
 from datetime import date, timedelta
+from dotenv import load_dotenv
+import os
+
+#Load environment variables from .env file
+load_dotenv()
 
 def cabecalho(canvas, doc):
 
     canvas.saveState()
 
     #Logo
-    logo_path = r'C:\Users\eduardosilva-aeg\OneDrive - AMBAR ENERGIA LTDA\Imagens\Logos\Logo.png'
+    logo_path = os.getenv('LOGO')
     canvas.drawImage(
         logo_path, 
         0.5*cm,
