@@ -1,9 +1,16 @@
 from dados import *
 from transform import *
 from datetime import date
+from pathlib import Path
+from dotenv import load_dotenv
+import os
 
-data = date.today()
-pasta = fr'C:\Users\eduardosilva-aeg\OneDrive - AMBAR ENERGIA LTDA\Documentos\Materiais\Apresentações\01. Janeiro 2026\Relatório de Inteligencia - diário\Deck {data.strftime("%d.%m.%Y")}'
+#Load environment variables from .env file
+load_dotenv()
+root = Path(os.getenv('PASTA'))
+
+dia = date.today()
+folder = foot /  f'Deck {dia.strftime("%d.%m.%Y")}'
 
 def load_content():
 
