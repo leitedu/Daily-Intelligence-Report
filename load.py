@@ -78,9 +78,6 @@ def load_content():
              'data': variacoes}
              ]
 
-
-'''
-
              {'type': 'two_tables',
              'title': f'Preços de importação por bloco {inicio_imp_preco.strftime("%d.%m.%Y")} a {fim_imp_preco.strftime("%d.%m.%Y")} (R$/MWh)',
              'data': [preco_ar, preco_ur]},
@@ -88,5 +85,3 @@ def load_content():
              {'type': 'two_tables',
              'title': f'Importação por bloco {data_blocos.strftime("%d.%m.%Y")} (MW)',
              'data': [bloco_ar, bloco_ur]},
-
-'''
