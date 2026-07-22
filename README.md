@@ -4,7 +4,7 @@
 
 > 📦 **Project Status:** This repository contains an internal tool that was successfully deployed in a production environment to sturcture and automate PDF report generation. The project is currently in a archived state with no active maintenance planned. Feel free to explore the code.
 >
-> * **Next Iteration:** Check out the original project at [Market intelligence report update]([https://github.com/seu-usuario/outro-projeto](https://github.com/leitedu/web-scraping/tree/main/Market%20intelligence%20report%20update))
+> * **Next Iteration:** Check out the original project at [Market intelligence report update](https://github.com/leitedu/web-scraping/tree/main/Market%20intelligence%20report%20update)
 
 ## 📌 Overview
 
