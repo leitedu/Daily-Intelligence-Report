@@ -10,8 +10,7 @@
 
 The main objective of this project was to convert the daily creation of a Market Intelligence Report and replaces PowerPoint editing with a PDF generation pipeline. 
 
-Additionally, the project aims to expand Python usage, transition from script-based programming to a modular structure, and replace Excel and VBA processes.
-
+Additionally, the project aims to expand Python usage, transition from script-based programming to a modular structure, and replace Excel/VBA processes.
 
 
 ## 🏗️ Architecture & Project Structure
@@ -24,7 +23,6 @@ The project follows a modular design pattern, separating data ingestion, process
 * **`layout.py` & `header.py`**: Define global visual styling, page setups, typography, and standard headers/footers for the PDF output.
 * **`sections.py` & `report.py`**: Assemble dynamic content components into cohesive report sections and compile the final PDF document.
 * **`env.example`**: Template for required environment variables (credentials, API endpoints, file paths).
-
 
 
 ## 🛠️ Key Technologies & Concepts
