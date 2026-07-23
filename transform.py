@@ -37,7 +37,7 @@ def import_prices():
     return start_date, end_date, price_ar, price_ur
 
 def import_blocks():
-    #Rwead file
+    #Reads file
     df_block = pd.read_csv(folder / 'blocks.csv', delimiter=';')
     df_block[['data', 'hora']] = df_block['din_instante'].str.split(' ', expand=True)
     df_block = df_block.drop(columns=['din_instante'])
@@ -55,7 +55,7 @@ def import_blocks():
                          'val_price':'mean'})
                          )
     
-    #Separa df Argentina e Uruguai
+    #Separates Uruguay and Argentina
     block_ar = block_group[block_group['nom_pais'] == 'ARGENTINA']
     block_ur = block_group[block_group['nom_pais'] == 'URUGUAI']
 
