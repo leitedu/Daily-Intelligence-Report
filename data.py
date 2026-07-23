@@ -11,9 +11,11 @@ import os
 load_dotenv()
 root = Path(os.getenv('PASTA'))
 
-dia = date.today()
-folder = foot /  f'Deck {dia.strftime("%d.%m.%Y")}'
+# Sets path of deck, where the files used in the report are saved
+day = date.today()
+folder = foot /  f'Deck {day.strftime("%d.%m.%Y")}'
 
+#Orchestrator
 def dados():
 
     p, browser, context, page = get_browser()
@@ -21,7 +23,7 @@ def dados():
     repdoe(page)
     close_browser(p, browser)
 
-
+#Handles browser
 def get_browser():
     p = sync_playwright().start()
     browser = p.firefox.launch(headless=False)
@@ -34,51 +36,50 @@ def close_browser(p, browser):
     browser.close()
     p.stop()
 
-
+#Scrapes Marginal Costs in Argentina
 def cmo_cammesa(page):
 
-    #Precios CAMMESA ARS
+    #CAMMESA ARS Prices
     try:
-        page.goto(f'https://microfe.cammesa.com/static-content/CammesaWeb/download-manager-files/Revistas/ProSem/preciosmercado.html', wait_until='load')
+        page.goto(f'https://microfe.cammesa.com/static-content/CammesaWeb/download-manager-files/Revistas/ProSem/pricesmercado.html', wait_until='load')
     except:
         sleep(2)
-        page.goto(f'https://microfe.cammesa.com/static-content/CammesaWeb/download-manager-files/Revistas/ProSem/preciosmercado.html', wait_until='load')
+        page.goto(f'https://microfe.cammesa.com/static-content/CammesaWeb/download-manager-files/Revistas/ProSem/pricesmercado.html', wait_until='load')
     sleep(5)
 
     soup = BeautifulSoup(page.content(), 'lxml')
-    precios_ars = pd.read_html(str(soup.select('table')).replace(',', '.'))[1]
+    prices_ars = pd.read_html(str(soup.select('table')).replace(',', '.'))[1]
 
-    #Scraping cambio
+    #Scrapes Exchange rate ARS-USD
     page.goto(f'https://www.bcb.gov.br/rex/sml/3-1-taxa.asp?frame=1')
     sleep(5)
 
     soup = BeautifulSoup(page.content(), 'lxml')
     usd_ars = pd.read_html(str(soup.select('table')), header=0)[0]
-    cambio = float(usd_ars.iloc[0, 1].replace('.', '').replace(',', '.'))
+    exchange = float(usd_ars.iloc[0, 1].replace('.', '').replace(',', '.'))
 
-    #DF Precios USD
-    precios_usd = precios_ars.copy()
+    #Creates dataframe with USD prices
+    prices_usd = prices_ars.copy()
     for i in range(7):
-        precios_usd[f'Dia{i+1}'] = precios_ars[f'Dia{i+1}']/cambio
-        precios_usd[f'Dia{i+1}'].round(2)
+        prices_usd[f'Dia{i+1}'] = prices_ars[f'Dia{i+1}']/exchange
+        prices_usd[f'Dia{i+1}'].round(2)
 
-    precios_usd = precios_usd.round(2).applymap(lambda x: f'{x:.2f}' if isinstance(x, (int, float)) else x).iloc[:,2:]
-    precios_ars = precios_ars.round(2).applymap(lambda x: f'{x:.2f}' if isinstance(x, (int, float)) else x).iloc[:,2:]
-    precios_ars.to_csv(f'{folder}\\CMO_arg_peso.csv', index=False)
-    precios_usd.to_csv(f'{folder}\\CMO_arg.csv', index=False)
+    prices_usd = prices_usd.round(2).applymap(lambda x: f'{x:.2f}' if isinstance(x, (int, float)) else x).iloc[:,2:]
+    prices_ars = prices_ars.round(2).applymap(lambda x: f'{x:.2f}' if isinstance(x, (int, float)) else x).iloc[:,2:]
+    prices_ars.to_csv(folder / f'CMO_arg_peso.csv', index=False)
+    prices_usd.to_csv(folder / f'CMO_arg.csv', index=False)
 
-
+#Scrapes Executive Report on the Daily Scheduling of Electric Power Operations (REPDOE) from ONS
 def repdoe(page):
 
-    login = 'eduardo.leite@ambarenergia.com.br'
-    senha = 'Ambar-energia@2025'
-    dia = date.today()
+    login = os.getenv('LOGIN-ONS')
+    password = os.getenv('PASSWORD-ONS')
 
-    local = rf'{folder}\REPDOE-{dia.strftime("%Y%m%d")}.pdf'
+    local = folder / rf'REPDOE-{day.strftime("%Y%m%d")}.pdf'
 
     result = False
-    tentativas = 0
-    while not result and tentativas < 20:
+    trials = 0
+    while not result and trials < 20:
         try:
             
             with page.expect_download() as download_info:
@@ -86,7 +87,7 @@ def repdoe(page):
                 page.goto(f'https://sintegre.ons.org.br/sites/9/51/_layouts/download.aspx?SourceUrl=/sites/9/51/Produtos/282/REPDOE-{dia.strftime("%Y%m%d")}.pdf')
 
                 page.locator('xpath=//*[@id="username"]').fill(login)
-                page.locator('xpath=//*[@id="password"]').fill(senha)
+                page.locator('xpath=//*[@id="password"]').fill(password)
                 page.locator('xpath=//*[@id="kc-login"]').click()
 
             download = download_info.value
@@ -95,18 +96,18 @@ def repdoe(page):
 
             result = True
         except:
-            tentativas += 1
-            sleep(300)  
+            trials += 1
+            sleep(10)  
 
-
-def df_cmo_barra():
-    df = pd.read_csv(f'{folder}\\CMO_barra.csv', delimiter=';')
+# Scrapes text from pdf
+def df_cmo():
+    df = pd.read_csv(folder / f'CMO.csv', delimiter=';')
     return df
 
-
-def load_texto(path):
+# Scrapes text from pdf
+def load_text(path):
     with open(path, 'r', encoding='utf-8') as file:
-        conteudo = file.read()
-    return conteudo
+        content = file.read()
+    return content
 
 dados()
