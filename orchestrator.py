@@ -1,7 +1,7 @@
-from relatorio import relatorio
+from report import report
 
 def main():
-    relatorio()
+    report()
 
 if __name__ == "__main__":
     main()
