@@ -15,8 +15,8 @@ import os
 load_dotenv()
 root = Path(os.getenv('FOLDER_OUTPUT'))
 
-dia = date.today()
-doc_name = root / f'Intelligence Report {dia.strftime("%d-%m-%Y")}.pdf'
+day = date.today()
+doc_name = root / f'Intelligence Report {day.strftime("%d-%m-%Y")}.pdf'
 
 
 def report():
