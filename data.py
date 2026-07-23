@@ -22,6 +22,8 @@ def dados():
     cmo_cammesa(page)
     repdoe(page)
     close_browser(p, browser)
+    
+    df_cmo()
 
 #Handles browser
 def get_browser():
