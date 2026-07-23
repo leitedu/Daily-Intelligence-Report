@@ -1,10 +1,10 @@
 from reportlab.platypus import SimpleDocTemplate
 from layout import *
-from secoes import *
-from dados import *
+from sections import *
+from data import *
 from load import *
 from transform import *
-from cabecalho import *
+from header import *
 from datetime import date
 from pathlib import Path
 from dotenv import load_dotenv
@@ -16,34 +16,34 @@ load_dotenv()
 root = Path(os.getenv('FOLDER_OUTPUT'))
 
 dia = date.today()
-doc_name = root / f'Relatório de Inteligência {dia.strftime("%d-%m-%Y")}.pdf'
+doc_name = root / f'Intelligence Report {dia.strftime("%d-%m-%Y")}.pdf'
 
 
-def relatorio():
+def report():
     doc = SimpleDocTemplate(doc_name, topMargin=4*cm, bottomMargin=2*cm, leftMargin=2*cm, rightMargin=2*cm)
     story = []
     style = build_styles()
     
 
-    conteudo = load_content()
+    content = load_content()
 
-    for bloco in conteudo:
-        if bloco['type'] == 'table':
-            tabela = fazer_tabela(bloco['data'])
-            story.append(secao_tabela(bloco['title'], tabela, style))
+    for block in content:
+        if block['type'] == 'table':
+            tabela = make_table(block['data'])
+            story.append(table_section(block['title'], tabela, style))
 
-        elif bloco['type'] == 'two_tables':
-            tabela1 = fazer_tabela(bloco['data'][0])
-            tabela2 = fazer_tabela(bloco['data'][1])
-            story.append(secao_duas_tabelas(bloco['title'], tabela1, tabela2, style))
+        elif block['type'] == 'two_tables':
+            tabela1 = make_table(block['data'][0])
+            tabela2 = make_table(block['data'][1])
+            story.append(double_table_section(block['title'], tabela1, tabela2, style))
 
-        if bloco['type'] == 'image':
-            imagem = add_imagem(bloco['data'])
-            story.extend(secao_imagem(bloco['title'], imagem, style))
+        if block['type'] == 'image':
+            image = add_image(block['data'])
+            story.extend(image_section(block['title'], image, style))
 
-        if bloco['type'] == 'text':
-            texto = bloco['data']
-            story.extend(secao_texto(bloco['title'], texto, style))
+        if block['type'] == 'text':
+            texto = block['data']
+            story.extend(text_session(block['title'], texto, style))
                             
     doc.build(story, onFirstPage=cabecalho)
 
