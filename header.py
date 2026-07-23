@@ -23,29 +23,29 @@ def cabecalho(canvas, doc):
         mask = 'auto'
     )
 
-    #Título
-    estilo_titulo = ParagraphStyle(
+    #Title
+    title_style = ParagraphStyle(
         name='CabecalhoTitulo',
         alignment=1,
         fontSize=20,
         spaceAfter=12,
     )
 
-    titulo = Paragraph("Relatório diário de Inteligência", estilo_titulo)
+    title = Paragraph("Relatório diário de Inteligência", title_style)
     w, h = titulo.wrap(doc.width, doc.topMargin)
-    titulo.drawOn(canvas, doc.leftMargin, doc.height + doc.topMargin - 0.5*cm)
+    title.drawOn(canvas, doc.leftMargin, doc.height + doc.topMargin - 0.5*cm)
 
-    #Data
-    estilo_data = ParagraphStyle(
+    #Date
+    date_style = ParagraphStyle(
         name='CabecalhoData',
         alignment=1,
         fontSize=12,
         spaceAfter=24
     )
 
-    data_atual = date.today() + timedelta(0)
-    data_formatada = data_atual.strftime("%d/%m/%Y")
-    data_paragraph = Paragraph(f"Data:<br/>{data_formatada}", estilo_data)
+    current_date = date.today() + timedelta(0)
+    format_date = current_date.strftime("%d/%m/%Y")
+    data_paragraph = Paragraph(f"Data:<br/>{format_date}", date_style)
     w, h = data_paragraph.wrap(doc.width, doc.topMargin)
     page_width = doc.pagesize[0]
     x = page_width - doc.rightMargin/1.75 - w/1.75
