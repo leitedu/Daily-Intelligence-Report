@@ -10,10 +10,10 @@ def build_styles():
     styles.add(ParagraphStyle(name='TitleCenter', parent=styles['Title'], alignment=1, fontSize=18, spaceAfter=12))
     return styles
 
-def fazer_tabela(dataframe):
-    dados = [dataframe.columns.tolist()] + dataframe.values.tolist()
-    tabela = Table(dados, hAlign='CENTER')
-    tabela.setStyle(TableStyle([
+def make_table(dataframe):
+    data = [dataframe.columns.tolist()] + dataframe.values.tolist()
+    table = Table(data, hAlign='CENTER')
+    table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#f68b20")),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
@@ -22,7 +22,7 @@ def fazer_tabela(dataframe):
         ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
         ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
     ]))
-    return tabela
+    return teble
 
-def add_imagem(caminho):
-    return Image(caminho)
+def add_image(path):
+    return Image(path)
